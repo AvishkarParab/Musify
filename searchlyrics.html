@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serach Lyrics</title>
+    <link rel="stylesheet" href="./css/homestyle.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h2><a href="./homepage.html">Music App</a></h2>
+            <ul>
+                <li><a href="./addsong.html">Add Song</a></li>
+                <li><a href="./musicplayer.html">Music Player</a></li>
+                <li><a href="./searchlyrics.html" class="active">Search Lyrics</a></li>
+                <li><a href="./index.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <br><br><br>
+    <div class="search_cont">
+        <fieldset>
+            <legend style="padding: 0px 15px;">Search Lyrics</legend>
+            <form action="">
+                <label for="sname">Song Name: </label>
+                <input type="text" name="sname" id="sname">
+                <label class="label2" for="sartist">Song Artist: </label>
+                <input type="text" name="sartist" id="sartist">
+                <div>
+                    <button class="search_btn" type="submit">Search <i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+    <div class="lyrics">
+        <h3>* Lyrics *</h3>
+        <div class="lyrics_result">
+            
+        </div>
+    </div>
+</body>
+<script src="https://kit.fontawesome.com/36fe686b6f.js" crossorigin="anonymous"></script>
+<script>
+    const lyrics_result = document.querySelector(".lyrics_result");
+    const lyricsCont = document.querySelector(".lyrics");
+    const sname = document.querySelector("#sname");
+    const searchbtn = document.getElementsByClassName("search_btn");
+
+    searchbtn[0].onclick = async (e) =>{
+        e.preventDefault();
+        lyricsCont.style.display = "block";
+        lyrics_result.innerHTML ="";
+    const options = {
+            method: 'GET',
+            headers: {
+            'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
+            'X-RapidAPI-Key': '106c997138msh7f58a4d89bd3d1ap10c5b7jsna5d653b7fa7c'
+            }
+        };
+        try {
+
+            let res = await fetch(`https://shazam.p.rapidapi.com/search?term=${sname.value}&locale=en-US&offset=0&limit=5`, options);
+            let tracks = await res.json();
+            let songCode = tracks.tracks.hits[0].track.key;
+
+            let lyricsRes = await fetch(`https://shazam.p.rapidapi.com/songs/get-details?key=${songCode}&locale=en-US`, options);
+            let lyrics = await lyricsRes.json();
+            // lyrics_result.innerHTML = lyrics.sections[1].text;
+            lyrics.sections[1].text.forEach(element => {
+                lyrics_result.innerHTML += element + "<br>";
+            });
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+</script>
+</html>

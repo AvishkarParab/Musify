@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">- -->
+    <title>ADD SONG</title>
+    <link rel="stylesheet" href="./css/homestyle.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h2><a href="./homepage.html">Music App</a></h2>
+            <ul>
+                <li><a href="./addsong.html" class="active">Add Song</a></li>
+                <li><a href="./musicplayer.html">Music Player</a></li>
+                <li><a href="./searchlyrics.html">Search Lyrics</a></li>
+                <li><a href="./index.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <br><br><br>
+   <div class="feild_cont">
+        <form action="#">
+            <input type="text" name="sname" id="sname" placeholder="Enter song name">
+            <button class="addsongbtn"> <i class="fa-solid fa-magnifying-glass"></i> </button>
+        </form>
+   </div>
+   <div class="result">
+        <h2>RESULTS</h2>
+        <h3 class="dis_result"></h3>
+        <ul class="list_result">
+           
+        </ul>
+   </div>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script> -->
+</body>
+<script>
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
+    const result = document.getElementsByClassName("dis_result");
+    const addSongBtn = document.getElementsByClassName("addsongbtn");
+    const list = document.querySelector(".list_result");
+    const sname = document.getElementById("sname");
+
+
+    // let h4tag =document.createElement("h4");
+    // h4tag.innerHTML=`Heelll`;
+    // let h5tag =document.createElement("h5");
+    // h5tag.innerHTML=`runnn`;
+
+    // let btntag =document.createElement("button");
+    // btntag.classList.add("addbtn");
+    // let addIcon = document.createElement("i");
+    // addIcon.classList.add("fa-solid");
+    // addIcon.classList.add("fa-plus");
+    // btntag.appendChild(addIcon);
+    
+    // let spantag =document.createElement("h5");
+    // spantag.innerHTML=`keyyyyyyyy`;
+
+    // trackDiv.appendChild(h4tag);
+    // trackDiv.appendChild(h5tag);
+    // audioDiv.appendChild(btntag);
+    // audioDiv.appendChild(spantag);
+    // createList.appendChild(trackDiv);
+    // createList.appendChild(audioDiv);
+
+
+    // list.appendChild(createList)
+    
+    addSongBtn[0].onclick = async (e) =>{
+        e.preventDefault();
+        list.innerHTML ="";
+        const options = {
+            method: 'GET',
+            headers: {
+            'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
+            'X-RapidAPI-Key': '106c997138msh7f58a4d89bd3d1ap10c5b7jsna5d653b7fa7c'
+            }
+        };
+        try {
+            console.log("in reached");
+            let res = await fetch(`https://shazam.p.rapidapi.com/search?term=${sname.value}&locale=en-US&offset=0&limit=5`, options);
+            let tracks = await res.json();
+            console.log(tracks.tracks.hits);
+            tracks.tracks.hits.forEach(element => {
+            let createList = document.createElement("li");
+            let trackDiv = document.createElement("div");
+            let audioDiv = document.createElement("div");
+            let h4tag =document.createElement("h4");
+            let btntag =document.createElement("button");
+            let spantag =document.createElement("h5");
+            trackDiv.classList.add("song_info");
+            audioDiv.classList.add("play");
+
+            h4tag.innerHTML=`${element.track.title}`;
+            let h5tag =document.createElement("h5");
+            h5tag.innerHTML=`${element.track.subtitle}`;
+
+            btntag.classList.add("addbtn");
+            let addIcon = document.createElement("i");
+            addIcon.classList.add("fa-solid");
+            addIcon.classList.add("fa-plus");
+            btntag.appendChild(addIcon);
+            
+            // spantag.innerHTML=`keyyyyyyyy`;
+
+            trackDiv.appendChild(h4tag);
+            trackDiv.appendChild(h5tag);
+            audioDiv.appendChild(btntag);
+            audioDiv.appendChild(spantag);
+            createList.appendChild(trackDiv);
+            createList.appendChild(audioDiv);
+
+
+            list.appendChild(createList);
+                // createList.appendChild();
+                // list.innerHTML += 
+                // `<li>
+                // <div class="song_info">
+                //     <h4>${element.track.title}</h4>
+                //     <h5>${element.track.subtitle}</h5>
+                // </div>
+                // <audio class="xyz" src=${element.track.url}>
+                //     <button class="addbtn"></button>
+                //     <span>${element.track.key}</span>    
+                // </audio>
+                // </li>
+                // `;
+                let playbtn = document.querySelector(`li button`);
+                let trackKey = document.querySelector(`li span`);
+
+                playbtn.onclick = async (e) =>{
+                    e.preventDefault();
+                    let response = await fetch(`https://shazam.p.rapidapi.com/songs/get-details?key=${trackKey.innerHTML}&locale=en-US`, options);
+                    let songLink = await response.json();
+                    console.log(songLink);
+                    let link = songLink.sections[1].youtubeurl.actions[0].uri;
+                    const xyz = document.querySelector(".xyz");
+                    const track = audioContext.createMediaElementSource(xyz);
+                    track.connect(audioContext.destination);
+                    xyz.play();
+                }
+            });
+            console.log(list.innerHTML);
+
+        } catch (err) {
+            console.log(err);
+            result[0].innerHTML = "No Results Found";
+
+        }
+
+        
+
+        // list.innerHTML += `
+        //     <li>
+        //     <div class="song_info">
+        //             <h4>Song 1</h4>
+        //             <h5>Song Artist</h5>
+        //         </div>
+        //         <button class="addbtn"><i class="fa-solid fa-plus"></i></button>
+        //     </li>
+        //     `;
+    }
+    
+</script>
+<script src="https://kit.fontawesome.com/36fe686b6f.js" crossorigin="anonymous"></script>
+</html>
+<!-- https://musicapi123.herokuapp.com/ -->

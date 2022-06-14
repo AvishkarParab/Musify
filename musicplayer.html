@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="./css/homestyle.css">
+    <link rel="stylesheet" href="./css/musicplayer.css">
+</head>
+<header>
+    <nav>
+        <h2><a href="./homepage.html">Music App</a></h2>
+        <ul>
+            <li><a href="./addsong.html">Add Song</a></li>
+            <li><a href="./musicplayer.html" class="active">Music Player</a></li>
+            <li><a href="./searchlyrics.html">Search Lyrics</a></li>
+            <li><a href="./index.html">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+<body>
+    <div class="container">
+        <div class="player_cont">
+            <h2>Song Name</h2>
+            <h5 style="font-weight: 300;">Artist Name</h5>
+            <div class="songimg">
+                <img src="./images/anders-jilden-cYrMQA7a3Wc-unsplash.jpg" alt="song">
+            </div>
+            <br><br><br>
+            <div class="progressbar">
+                <span><span class="fillbar"></span></span>   
+            </div>
+            <br><br>
+            <div class="audio_controls">
+                <button class="btn btn_prev"> <i class="fa-solid fa-backward"></i> </button>
+                <button class="btn btn_play"><i class="fa-solid fa-play"></i></button>
+                <button class="btn btn_next"> <i class="fa-solid fa-forward"></i> </button>
+            </div>
+            <br>
+            <div class="soundbar">
+                <button class="mutebtn"><i class="fa-solid fa-volume-xmark"></i></button>
+                <span><span class="fillbar"></span></span>   
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://kit.fontawesome.com/36fe686b6f.js" crossorigin="anonymous"></script>
+</html>

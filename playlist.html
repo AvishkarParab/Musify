@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+    <link rel="stylesheet" href="./css/homestyle.css">
+</head>
+<body>
+    <div class="play_cont">
+        <div>
+            <a href="./homepage.html"><button class="backbtn"> <i class="fa-solid fa-caret-left"></i></button></a>
+        </div>
+        <br>
+        <h2 class="playname">Playlist Name</h2>
+        <ul>
+            <li>
+                <div class="songinfo">
+                    <h4>Song Name</h4>
+                    <h5>Artist</h5>
+                </div>
+                <div class="songbtn">
+                    <a href="./musicplayer.html"><button class="play"> <i class="fa-solid fa-circle-play"></i> </button></a>
+                </div>
+            </li>
+            <li>
+                <div class="songinfo">
+                    <h4>Song Name</h4>
+                    <h5>Artist</h5>
+                </div>
+                <div class="songbtn">
+                    <a href="./musicplayer.html"><button class="play"> <i class="fa-solid fa-circle-play"></i> </button></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    console.log(window.location.search.substring(1));
+    const playname = document.getElementsByClassName("playname");
+    playname[0].innerHTML = window.location.search.substring(1);
+
+</script>
+<script src="https://kit.fontawesome.com/36fe686b6f.js" crossorigin="anonymous"></script>
+</html>
